@@ -1,17 +1,4 @@
-type createConfirmConfig = {
-	text: string;
-	buttonConfirmText: string;
-	buttonDeclineText: string;
-	onConfirm: Function;
-	onDecline: Function;
-}
-
-type createHtmlElementArgs = {
-	tag: string;
-	classNames: string[];
-	onClick?: Function;
-	text?: string;
-}
+import { createHtmlElementArgs, createConfirmConfig } from "./types"
 
 const defaultConfig: createConfirmConfig = {
 	text: 'Are you sure?',
@@ -21,6 +8,7 @@ const defaultConfig: createConfirmConfig = {
 	onDecline: () => { console.log("decline") },
 }
 
+
 const createHtmlElement = (args: createHtmlElementArgs): HTMLElement => {
 	const { tag, classNames, text, onClick } = args;
 	const element = document.createElement(tag);
@@ -28,8 +16,8 @@ const createHtmlElement = (args: createHtmlElementArgs): HTMLElement => {
 	element.innerText = text ?? "";
 
 	if (onClick) {
-		element.addEventListener("click", () => {
-			onClick();
+		element.addEventListener("click", (e) => {
+			onClick(e);
 		});
 	}
 
@@ -50,13 +38,17 @@ const createConfirm = (config: createConfirmConfig = defaultConfig): void => {
 	const confirmContainer = createHtmlElement({
 		tag: "div",
 		classNames: ["confirm-water-container"],
+		onClick: (e: any) => {
+			e.currentTarget.remove();
+			body.removeAttribute("confirm-water");
+		}
 	});
 
 	// Create confirm button
 	const confirmBtn = createHtmlElement({
 		tag: "button",
 		classNames: ["confirm-water-btn", "confirm-water-confirm-btn"],
-		text: config.buttonConfirmText,
+		text: config.buttonConfirmText + " ↵",
 		onClick: () => {
 			confirmContainer.remove();
 			body.removeAttribute("confirm-water");
@@ -104,6 +96,15 @@ const createConfirm = (config: createConfirmConfig = defaultConfig): void => {
 	confirmContainer.appendChild(confirmWindow);
 
 	body.appendChild(confirmContainer);
+	body.addEventListener("keydown", (e) => {
+		if (e.key === "Enter") {
+			confirmBtn.click();
+		}
+
+		if (e.key === "Escape") {
+			declineBtn.click();
+		}
+	});
 }
 
 export default createConfirm;
