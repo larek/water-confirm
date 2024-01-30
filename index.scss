@@ -1,0 +1,83 @@
+$successBg: #4CAF50 !default;
+$successColor: #fff !default;
+$declineBg: #ccc !default;
+$declineColor: #000 !default;
+
+body[confirm-water]{
+	overflow: hidden;
+}
+
+.confirm-water-container{
+	display: flex;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	z-index: 9999;
+	background: rgba(0,0,0,0.5);
+	justify-content: center;
+	align-items: center
+}
+
+.confirm-water-window{
+	width: 80%;
+	max-width: 500px;
+	background: #fff;
+	border-radius: 5px;
+	box-shadow: 0 0 10px rgba(0,0,0,0.5);
+	animation: confirmWater 0.2s cubic-bezier(.18,.89,.32,1.28);
+}
+
+@keyframes confirmWater{
+	0%{
+		opacity: 0;
+		transform: translateY(-50px);
+	}
+	100%{
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.confirm-water-text{
+	font-size: 1.2em;
+	padding: 50px 30px;
+}
+
+.confirm-water-action-container{
+	display: flex;
+	flex-direction: row;
+}
+
+.confirm-water-btn{
+	width: 100%;
+	cursor: pointer;
+	padding: 10px 20px;
+	font-size: 1em;
+	text-transform: uppercase;
+}
+
+.confirm-water-confirm-btn{
+	color: $successColor;
+	background: $successBg;
+	border: 1px solid $successBg;
+	border-bottom-left-radius: 5px;
+}
+
+.confirm-water-confirm-btn:hover{
+	background: darken($successBg, 5%);
+	border: 1px solid darken($successBg, 5%);
+}
+
+.confirm-water-decline-btn{
+	color: $declineColor;
+	background: $declineBg;
+	border: 1px solid $declineBg;
+	border-bottom-right-radius: 5px;
+}
+
+.confirm-water-decline-btn:hover{
+	background: darken($declineBg, 5%);
+	border: 1px solid darken($declineBg, 5%);
+}
